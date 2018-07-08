@@ -36,3 +36,8 @@ class TicTacToe():
         for i in self.gameState:
             print(i)
    
+    def verifyWin(self):
+        for i in range(len(self.gameState)):
+            for j in range(len(self.gameState)):
+                print(self.gameState[i][j], " ", end="")
+            print()
