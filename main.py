@@ -14,4 +14,7 @@ from tictactoe import * # Importação do arquivo tictactoe, que possui a classe
 
 if __name__ == '__main__': # Funcao que funciona como uma main
     game = TicTacToe() # Instanciação da classe TicTacToe
-    game.verifyWin()
+    #game.printArguments()
+    game.verifyWinDiag(2)
+    game.printState(game.initialState)
+    #game.generateStates()
