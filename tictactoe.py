@@ -143,9 +143,12 @@ class TicTacToe():
                     listMoves.append([i,j])
         return listMoves
 
+    def heuristic(self):
+        pass
+
     def minimax(self, state, alpha, beta, isMaxizingPlayer):
         self.depth += 1
-        if(self.verifyWinCondition(state) == 3 and self.depth == self.maxDepth):
+        if(self.verifyWinCondition(state) == 3 and not self.depth == self.maxDepth):
             listMoves = self.getMoves(state)
             if(len(listMoves) > 1):
                 if isMaxizingPlayer == True:
