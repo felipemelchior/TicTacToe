@@ -50,15 +50,52 @@ class TicTacToe():
                     sequence = 0  
                 if(sequence == self.k):
                     return 1
-            else:
-                sequence = 0
         return 0
     
     def verifyWinRightDiag(self, state, player):
-        pass
+        sequence = 0
+
+        auxRow = 0
+        auxCol = 0
+
+        for i in range(self.m):
+            for j in range(self.n):
+                auxRow = i
+                auxCol = j
+                while((auxRow < self.m and auxCol < self.n)):
+                    if(state[auxRow][auxCol] == player):
+                        sequence += 1
+                    else:
+                        sequence = 0
+                    if(sequence == self.k):
+                        return 1
+
+                    auxRow += 1
+                    auxCol += 1     
+        return 0
 
     def verifyWinLeftDiag(self, state, player):
-        pass
+        sequence = 0
+
+        auxRow = 0
+        auxCol = 0
+
+        for i in range(self.m):
+            for j in range(self.n-1, -1, -1):
+                auxRow = i
+                auxCol = j
+
+                while((auxRow < self.m and auxCol >= 0)):
+                    if(state[auxRow][auxCol] == player):
+                        sequence += 1
+                    else:
+                        sequence = 0
+                    if(sequence == self.k):
+                        return 1
+
+                    auxRow += 1
+                    auxCol -= 1     
+        return 0
 
     def verifyWinCondition(self, state):
         if(self.verifyWinX(state, self.player) == 1):
@@ -67,10 +104,12 @@ class TicTacToe():
         if(self.verifyWinY(state, self.player) == 1):
             print("Jogador Ganhou")
             return 1
-        if(self.verifyWinRightDiag(state, self.player)):
-            pass
-        if(self.verifyWinLeftDiag(state, self.player)):
-            pass
+        if(self.verifyWinRightDiag(state, self.player) == 1):
+            print("Jogador Ganhou")
+            return 1
+        if(self.verifyWinLeftDiag(state, self.player) == 1):
+            print("Jogador Ganhou")
+            return 1
 
         if(self.verifyWinX(state, self.opponent) == 1):
             print("Oponente Ganhou")
@@ -78,10 +117,12 @@ class TicTacToe():
         if(self.verifyWinY(state, self.opponent) == 1):
             print("Oponente Ganhou")
             return -1
-        if(self.verifyWinRightDiag(state, self.opponent)):
-            pass
-        if(self.verifyWinLeftDiag(state, self.opponent)):
-            pass
+        if(self.verifyWinRightDiag(state, self.opponent) == 1):
+            print("Oponente Ganhou")
+            return -1
+        if(self.verifyWinLeftDiag(state, self.opponent) == 1):
+            print("Oponente Ganhou")
+            return -1
 
         print("Empate")
         return 2
