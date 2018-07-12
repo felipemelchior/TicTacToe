@@ -102,8 +102,10 @@ class TicTacToe():
 
             for z in range(zeros):
                 for i in range(len(currentState)):
+                    flag2 = 1 
                     for j in range(len(currentState)):
                         if(currentState[i][j] == 0):
+                            flag2 = 0
                             if(flag == 1):
                                 self.queue.append(self.createStates(currentState, self.player, auxQueue, i, j))
                                 flag = 0
@@ -111,7 +113,10 @@ class TicTacToe():
                                 self.queue.append(self.createStates(currentState, self.opponent, auxQueue, i, j))
                                 flag = 1
                             break
-                    
+                    if(flag2 == 0):
+                        break    
+
+            
             depth += 1
 
         self.printStates()
