@@ -70,7 +70,8 @@ class TicTacToe():
                         return 1
 
                     auxRow += 1
-                    auxCol += 1     
+                    auxCol += 1
+                sequence = 0     
         return 0
 
     def verifyWinLeftDiag(self, state, player):
@@ -92,7 +93,8 @@ class TicTacToe():
                         return 1
 
                     auxRow += 1
-                    auxCol -= 1     
+                    auxCol -= 1
+                sequence = 0     
         return 0
 
     def verifyWinCondition(self, state):
@@ -127,7 +129,7 @@ class TicTacToe():
             for j in range(self.n):
                 if(state[i][j] != 0):
                     drawCount += 1
-        if(drawCount == len(state)):
+        if(drawCount == (self.m * self.n)):
             print("Empate")
             return 2
 
