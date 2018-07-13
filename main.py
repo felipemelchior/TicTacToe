@@ -38,5 +38,7 @@ from tictactoe import * # Importação do arquivo tictactoe, que possui a classe
 
 if __name__ == '__main__': # Funcao que funciona como uma main
     game = TicTacToe() # Instanciação da classe TicTacToe
-    game.minimax(game.initialState, -1000, 1000, True)
+    play = game.minimax(game.initialState, -1000, 1000) # Decisao que a IA fará, um estado inicial e um numero que representa alfa e outro beta, utilizado para a poda
     
+    if play: # Se a IA conseguiu calcular uma jogada
+        print(play[0], play[1]) # Imprime ela na tela
