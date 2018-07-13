@@ -6,8 +6,16 @@
 #             https://github.com/homdreen/TicTacToe               #
 #                                                                 #   
 #                                                                 #
-#                        REFERÊNCIA                               #
+#                        REFERÊNCIAS                              #
 #                    https://goo.gl/sph4pp                        #
+#                    https://goo.gl/rY22sv                        #
+#                    https://goo.gl/qVECqR                        #
+#                    https://goo.gl/ZPBCQb                        #
+#                                                                 #
+#                         PARA RODAR                              #
+#            $ python3 main.py m n jogador k <estado>             #
+#                                                                 #
+#                                                                 #
 #                                                                 #
 #                    FELIPE HOMRICH MELCHIOR                      #
 #                          161150758                              #
@@ -38,7 +46,7 @@ from tictactoe import * # Importação do arquivo tictactoe, que possui a classe
 
 if __name__ == '__main__': # Funcao que funciona como uma main
     game = TicTacToe() # Instanciação da classe TicTacToe
-    play = game.minimax(game.initialState, -1, -1000, 1000) # Decisao que a IA fará, um estado inicial e um numero que representa alfa e outro beta, utilizado para a poda
+    play = game.minimax(game.initialState, -1, -100, 100) # Decisao que a IA fará, um estado inicial e um numero que representa alfa e outro beta, utilizado para a poda
     
     if play: # Se a IA conseguiu calcular uma jogada
         print(play[0], play[1]) # Imprime ela na tela
