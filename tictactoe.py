@@ -15,7 +15,7 @@ class TicTacToe(): # Classe principal do programa
         self.k = int(sys.argv[4]) # Numero de simbolos em sequencia necessarios para ganhar, condição de vitoria
         self.initialState = [int(i) for i in sys.argv[5:]] # Vetor que representa o estado
         self.play = [] # Jogada que a IA fará
-        self.depth = -1 # Altura atual da arvore
+        self.initialPoints = 0 # Dicionario que guarda os rankings dos estados
         self.maxDepth = 30 # Altura máxima da arvore
 
         self.initialState = np.reshape(self.initialState, (self.m, self.n)) # Transforma o vetor em matrix mxn
@@ -193,78 +193,67 @@ class TicTacToe(): # Classe principal do programa
 
         return returnValue
 
-    def heuristic(self, state):
-        rankState = 0
-        
+    def heuristic(self, state, depth, player):
         if(self.verifyWinCondition(state) == 1):
-            rankState += 10
+            return self.initialPoints - depth + self.sequences(state, self.player)
         elif(self.verifyWinCondition(state) == -1):
-            rankState -= 10
+            return depth - self.initialPoints -1 * (self.sequences(state, self.opponent) * 2)
         else:
-            rankState += self.sequences(state, self.player)
-            rankState -= self.sequences(state, self.player)
+            return 0
 
-        return rankState
-
-    def maxPlayer(self, state, alpha, beta):
+    def maxPlayer(self, state, depth, alpha, beta):
         listMoves = self.getMoves(state)
 
-        self.depth += 1
-        if(self.verifyWinCondition(state) == -1 or self.verifyWinCondition(state) == 1 or self.depth == self.maxDepth):
-            return self.heuristic(state)
+        if((self.verifyWinCondition(state) == -1) or (self.verifyWinCondition(state) == 2) or (self.verifyWinCondition(state) == 1) or (depth >= self.maxDepth)):
+            return self.heuristic(state, depth, self.player)
+
+        bestScore = -1000
+        for move in listMoves:
+            currentState = state.copy()
+            currentState[move[0]][move[1]] = self.player
+            bestScore = max(bestScore, self.minPlayer(currentState, depth+1, alpha, beta))
+            alpha = max(alpha, bestScore)
+            if(beta <= alpha):
+                break
+
+        return bestScore
+
+    def minPlayer(self, state, depth, alpha, beta):
+        listMoves = self.getMoves(state)
+
+        if((self.verifyWinCondition(state) == -1) or (self.verifyWinCondition(state) == 2) or (self.verifyWinCondition(state) == 1) or (depth >= self.maxDepth)):
+            return self.heuristic(state, depth, self.opponent)
 
         bestScore = 1000
         for move in listMoves:
             currentState = state.copy()
             currentState[move[0]][move[1]] = self.opponent
-            score = self.minPlayer(currentState, alpha, beta)
-
-            if(score >= bestScore):
-                bestScore = score
-                alpha = bestScore
+            bestScore = min(bestScore, self.maxPlayer(currentState, depth+1, alpha, beta))
+            beta = min(beta, bestScore)
             if(beta <= alpha):
-                return alpha
+                break
 
         return bestScore
 
-    def minPlayer(self, state, alpha, beta):
-        listMoves = self.getMoves(state)
-
-        self.depth += 1
-        if(self.verifyWinCondition(state) == -1 or self.verifyWinCondition(state) == 1 or self.depth == self.maxDepth):
-            return self.heuristic(state)
-
-        bestScore = 1000
-        for move in listMoves:
-            currentState = state.copy()
-            currentState[move[0]][move[1]] = self.opponent
-            score = self.maxPlayer(currentState, alpha, beta)
-
-            if(score <= bestScore):
-                bestScore = score
-                beta = bestScore
-            if(beta <= alpha):
-                return beta
-
-        return bestScore
-
-    def minimax(self, state, alpha, beta):
+    def minimax(self, state, depth, alpha, beta):
         listMoves = self.getMoves(state)
         
+        self.initialPoints = len(listMoves)+1
         if len(listMoves) == 1:
             return [listMoves[0][0], listMoves[0][1]]
         elif len(listMoves) == 0:
             return None
+        elif len(listMoves) == self.m * self.n:
+            return [listMoves[int(len(listMoves)/2)][0], listMoves[int(len(listMoves)/2)][1]]
         else:
             bestScore = -1000
             for move in listMoves:
                 currentState = state.copy()
                 currentState[move[0]][move[1]] = self.player
-                score = self.minPlayer(currentState, alpha, beta)
-                if(score >= bestScore):
-                    self.play = move
-                    bestScore = score
-                    alpha = bestScore
+                bestScore = max(bestScore, self.minPlayer(currentState, depth+1, alpha, beta))
+                alpha = max(alpha, bestScore)
+                self.play = move
+               
                 if(alpha >= beta):
                     break # poda
 
