@@ -99,29 +99,21 @@ class TicTacToe():
 
     def verifyWinCondition(self, state):
         if(self.verifyWinX(state, self.player) == 1):
-            print("Jogador Ganhou - X")
-            return 1
+           return 1
         if(self.verifyWinY(state, self.player) == 1):
-            print("Jogador Ganhou - Y")
             return 1
         if(self.verifyWinRightDiag(state, self.player) == 1):
-            print("Jogador Ganhou - DiagRight")
             return 1
         if(self.verifyWinLeftDiag(state, self.player) == 1):
-            print("Jogador Ganhou - DiagLeft")
             return 1
 
         if(self.verifyWinX(state, self.opponent) == 1):
-            print("Oponente Ganhou - X")
             return -1
         if(self.verifyWinY(state, self.opponent) == 1):
-            print("Oponente Ganhou - Y")
             return -1
         if(self.verifyWinRightDiag(state, self.opponent) == 1):
-            print("Oponente Ganhou - DiagRight")
             return -1
         if(self.verifyWinLeftDiag(state, self.opponent) == 1):
-            print("Oponente Ganhou - DiagLeft")
             return -1
 
         drawCount = 0
@@ -130,7 +122,6 @@ class TicTacToe():
                 if(state[i][j] != 0):
                     drawCount += 1
         if(drawCount == (self.m * self.n)):
-            print("Empate")
             return 2
 
         return 3
@@ -143,8 +134,17 @@ class TicTacToe():
                     listMoves.append([i,j])
         return listMoves
 
-    def heuristic(self):
-        pass
+    def heuristic(self, state):
+        rankState = 0
+
+        if(self.verifyWinCondition(state) == 1):
+            rankState += 100
+        elif(self.verifyWinCondition(state) == -1):
+            rankState -= 100
+        elif(self.verifyWinCondition(state) == 2):
+            rankState = 0
+
+        return rankState
 
     def minimax(self, state, alpha, beta, isMaxizingPlayer):
         self.depth += 1
@@ -157,6 +157,7 @@ class TicTacToe():
                         currentState = state.copy()
                         currentState[move[0]][move[1]] = self.player
                         score = self.minimax(currentState, alpha, beta, False)
+                        #print(type(score), 'jogador')
                         if(score >= bestScore):
                             self.play = move
                             bestScore = score
@@ -169,6 +170,7 @@ class TicTacToe():
                         currentState = state.copy()
                         currentState[move[0]][move[1]] = self.opponent
                         score = self.minimax(currentState, alpha, beta, True)
+                        #print(type(score), 'opponent')
                         if(score <= bestScore):
                             self.play = move
                             bestScore = score
@@ -176,6 +178,10 @@ class TicTacToe():
                         if(alpha >= beta):
                             break  # poda
             else:
-                print(listMoves[0][0], listMoves[0][1])                      
+                pass
+                #print(listMoves[0][0], listMoves[0][1])                      
         else:
-            pass # heuristic  
+            print(self.heuristic(state))
+            return self.heuristic(state) # heuristic
+
+        #print(self.play[0], self.play[1]) 
